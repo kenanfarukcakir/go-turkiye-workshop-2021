@@ -1,0 +1,51 @@
+// create self-signed ca.crt (1)
+// create server.key and csr to be signed by (1)
+// get server.crt
+https://phoenixnap.com/kb/kubernetes-ssl-certificates
+
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -subj "/CN=[master-ip-address]" -days [number] -out ca.crt
+openssl genrsa -out server.key 2048
+openssl req -new -key server.key -out server.csr -config csr.conf
+
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key \
+-CAcreateserial -out server.crt -days 10000 \
+-extensions v3_ext -extfile csr.conf
+
+// use resulting server.crt 
+openssl x509 -noout -text -in ./server.crt
+
+
+
+// create kind cluster
+kind create cluster --name go-turkiye-workshop
+kubectl config set-context kind-go-turkiye-workshop
+
+// to setup istio in your cluster
+istioctl install
+
+
+// load image to kind cluster
+kind load docker-image sidecache-injector:v0.1 --name go-turkiye-workshop
+
+kubectl create ns platform
+kubectl create secret tls sidecache-injector-secret --cert=server.crt --key=server.key -n platform --dry-run=client -o yaml > secret.yaml
+kubectl apply -f secret.yaml -n platform
+
+// we are going to use in mutatingwebhookconfiguration
+cat ca.crt | base64 - > caBundle
+
+kubectl apply -f mutatingwebhookconf.yaml -n platform
+kubectl apply -f rbac.yaml -n platform
+kubectl apply -f deployment.yaml -n platform
+kubectl apply -f service.yaml -n platform
+
+
+// label your namespace if you want injection to happen
+kubectl label namespace default cache.goturkiye.com/sidecache-webhook=enabled
+kubectl apply -f demo-api.yaml -n default 
+// add to its annotation  'sidecache.trendyol.com/inject : true' label
+
+
+
+

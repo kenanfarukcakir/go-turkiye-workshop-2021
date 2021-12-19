@@ -1,0 +1,38 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: sidecache-injector-webhook-config
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNwakNDQVk0Q0NRQ1RnVG1IYlFnTkx6QU5CZ2txaGtpRzl3MEJBUXNGQURBVk1STXdFUVlEVlFRRERBcG4KYnkxMGRYSnJhWGxsTUI0WERUSXhNVEl4T1RFd016VTFOMW9YRFRNeE1USXhOekV3TXpVMU4xb3dGVEVUTUJFRwpBMVVFQXd3S1oyOHRkSFZ5YTJsNVpUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCCkFNOXJFTGpKM2NWbkw1SmthTFJtcVo0TmJxVlNLK3FNbGo5WVFiVVJ3akRaQXVZK0hoZE1GR1hiQVl1T2VBWS8KYUhlZ2hicUlPcUF4TG43YjJMbUZ6bnVCLzgvOVFhUW1pQVFxanF6Ykk1d3AydVI0UVRvU1FoSnBZamJKeWF2QgpKU28zbHdyZmdjZG4xNFp4cHUzREtPKy9HMXl6WXZ6SEwwK0Rkbk03eWRnS1hkcWtCQVc4ZjhNVlp2SzhqbVJwCktuOUVjZ0Nwbi9YQk1udWIxbGM4RjJZV0w1cklrckZXQnpmb0JETlMwQjlpWUVXNmxDSGpNVDFHM21FTm5BV0YKcjZ3UHBxQnlFQWpjdUtKcU1oY2NycDFncmczb3ZhclQzNkxYY2FIR3lac0VSbzRaMTd2VVRWcE42aWY2ZTR2WQowbWdqdGlqN29WS3hSZ1ZCMmtMclNSa0NBd0VBQVRBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQXphYVdmSUJjClhKNEJlb2VLbG1hTjBiUmRWUVMya0hXZWpBMkZnMW1ndlU3ZXJ5aGh6RGJKRldsN2tLWFBOamFNM1lLamJRc3MKempDTGJsc2hOTXhBRFFZbmM5REhPeXZNVlZmdUxYTDl1V1ZsQW5vdXJpTG4rS2RJb3k3cXJPRzB0YlR4NXhwMAo5SkZIMFdxZysySHBtczFmRE5USDl1bmh2NFRNSWRObTdOWlpxQjg5UHpwVXJJNUtBZ2ZOUXRFYzlwZTZ0ZHdMCmloN3ZuRTlZMWM2MTZzRUM0N3Q5S0k0d1hoQnFHZHltTDREVGhhQmZQRmVsbjRtZEV0S0VaQVZpb1BKLzN5ZUoKTXNMTVdMQWZ3cnFmNnBGUEtyT2cxMUYzU3pTTk9BV1VZYU9LZDZEQ2dNcGhtdjBDYytkM1FUdGlMbDNGU3g4OQp5OEMzdXQ3OFYzZ1haZz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    service:
+      name: sidecache-injector
+      namespace: platform
+      path: /mutate
+      port: 443
+  failurePolicy: Ignore
+  matchPolicy: Exact
+  name: sidecache-injector.platform.svc
+  namespaceSelector:
+    matchLabels:
+      cache.goturkiye.com/sidecache-webhook: enabled
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - extensions
+    - apps
+    apiVersions:
+    - v1beta1
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - deployments
+    scope: '*'
+  sideEffects: None
+  timeoutSeconds: 30
+

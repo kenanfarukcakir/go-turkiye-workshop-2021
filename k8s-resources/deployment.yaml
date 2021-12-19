@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sidecache-injector
+  name: sidecache-injector
+  namespace: platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sidecache-injector
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: sidecache-injector
+    spec:
+      containers:
+      - image: sidecache-injector:v0.1
+        name: mutatingwebhook
+        resources: {}
+        volumeMounts:
+        - name: tls-secret
+          mountPath: "/tmp/tls-secret"
+          readOnly: true
+        env:
+          - name: SIDECACHE_IMAGE
+            value: nginx
+      volumes:
+      - name: tls-secret
+        secret:
+          secretName: sidecache-injector-secret
+      serviceAccount: sidecache-injector
+      serviceAccountName: sidecache-injector

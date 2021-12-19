@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "sidecache"
+  description: "Sidecar cache for kubernetes applications. It acts as a proxy sidecar between application and client, routes incoming requests to cache storage or application according to Istio VirtualService routing rules."
+  annotations:
+    backstage.io/techdocs-ref: url:https://gitlab.trendyol.com/platform/base/apps/sidecache/tree/master
+spec:
+  type: documentation
+  lifecycle: development
+  owner: devx
+

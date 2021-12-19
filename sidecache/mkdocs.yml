@@ -1,0 +1,7 @@
+site_name: "Sidecache"
+
+nav:
+  - Sidecache: index.md 
+plugins:
+  - techdocs-core
+

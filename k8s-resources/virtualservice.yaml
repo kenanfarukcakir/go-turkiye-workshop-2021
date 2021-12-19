@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  generation: 2
+  name: demo-api
+  namespace: default
+spec:
+  hosts:
+  - demo-api
+  http:
+  - match:
+    - method:
+        exact: GET
+    route:
+    - destination:
+        host: demo-api.default.svc.cluster.local
+        port:
+          number: 9191
+  - route:
+    - destination:
+        host: demo-api.default.svc.cluster.local
+        port:
+          number: 8080

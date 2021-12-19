@@ -17,4 +17,6 @@ FROM alpine:3.12
 
 COPY --from=build app/main app/main
 
+EXPOSE 8080
+
 ENTRYPOINT /app/main

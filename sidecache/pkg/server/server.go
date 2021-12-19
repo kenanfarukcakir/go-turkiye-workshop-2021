@@ -5,6 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Trendyol/sidecache/pkg/cache"
 	"github.com/Trendyol/sidecache/pkg/model"
 	"github.com/klauspost/compress/gzip"
@@ -13,13 +21,6 @@ import (
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 	"go.uber.org/zap"
-	"net/http"
-	"net/url"
-	"os"
-	"sort"
-	"strconv"
-	"strings"
-	"time"
 )
 
 const CacheHeaderKey = "cachable"

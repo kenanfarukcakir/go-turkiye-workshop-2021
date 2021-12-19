@@ -26,7 +26,7 @@ spec:
           readOnly: true
         env:
           - name: SIDECACHE_IMAGE
-            value: "mock-sidecache:v0.2"
+            value: "sidecache:v0.1"
       volumes:
       - name: tls-secret
         secret:

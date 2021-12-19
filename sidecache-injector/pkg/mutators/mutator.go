@@ -73,7 +73,7 @@ func createSidecacheContainer(currentAnnotations map[string]string) corev1.Conta
 				corev1.ResourceMemory: requestMemory,
 			},
 		},
-		ImagePullPolicy: corev1.PullAlways,
+		ImagePullPolicy: corev1.PullIfNotPresent,
 		Env: []corev1.EnvVar{
 			{
 				Name:  "EXAMPLE_ENV_VAR",

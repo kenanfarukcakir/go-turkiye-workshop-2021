@@ -46,6 +46,9 @@ kubectl label namespace default cache.goturkiye.com/sidecache-webhook=enabled
 kubectl apply -f demo-api.yaml -n default 
 // add to its annotation  'sidecache.trendyol.com/inject : true' label
 
+kubectl apply -f demo-api-service.yaml -n default 
+kubectl apply -f virtualservice.yaml -n default 
+
 
 
 

@@ -65,9 +65,9 @@ func main() {
 		}),
 	}
 
-	pepSidecarHookHandler, _ := admission.StandaloneWebhook(sidecacheMutatingHook, admission.StandaloneOptions{})
+	sidecacheHookHandler, _ := admission.StandaloneWebhook(sidecacheMutatingHook, admission.StandaloneOptions{})
 
-	http.Handle(sidecacheWebHookPath, pepSidecarHookHandler)
+	http.Handle(sidecacheWebHookPath, sidecacheHookHandler)
 
 	server.ListenAndServeTLS("", "")
 }
